@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
@@ -6,14 +6,26 @@ import { User, Mail, Lock } from "lucide-react";
 
 const Signup = () => {
   const navigate = useNavigate();
+  // Updated state type to include Guardian
+  const [role, setRole] = useState<"Patient" | "Doctor" | "Guardian">(
+    "Patient"
+  );
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate Signup
+
+    // SAVE USER WITH THE SELECTED ROLE
     localStorage.setItem(
       "mindSyncUser",
-      JSON.stringify({ email: "new@user.com", name: "New User" })
+      JSON.stringify({
+        email: email,
+        name: name,
+        role: role,
+      })
     );
+
     navigate("/");
   };
 
@@ -45,6 +57,8 @@ const Signup = () => {
                 />
                 <input
                   type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary focus:outline-none transition-all"
                   placeholder="John Doe"
                   required
@@ -63,6 +77,8 @@ const Signup = () => {
                 />
                 <input
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary focus:outline-none transition-all"
                   placeholder="name@example.com"
                   required
@@ -88,24 +104,41 @@ const Signup = () => {
               </div>
             </div>
 
-            <div className="flex gap-4 p-1 bg-gray-50 rounded-xl">
-              <label className="flex-1 cursor-pointer">
-                <input
-                  type="radio"
-                  name="role"
-                  className="peer sr-only"
-                  defaultChecked
-                />
-                <div className="rounded-lg p-2 text-center text-sm font-medium text-text-muted peer-checked:bg-white peer-checked:text-primary peer-checked:shadow-sm transition-all">
-                  Patient
-                </div>
-              </label>
-              <label className="flex-1 cursor-pointer">
-                <input type="radio" name="role" className="peer sr-only" />
-                <div className="rounded-lg p-2 text-center text-sm font-medium text-text-muted peer-checked:bg-white peer-checked:text-primary peer-checked:shadow-sm transition-all">
-                  Doctor
-                </div>
-              </label>
+            {/* Role Selection Buttons */}
+            <div className="flex gap-2 p-1 bg-gray-50 rounded-xl overflow-x-auto">
+              <button
+                type="button"
+                onClick={() => setRole("Patient")}
+                className={`flex-1 p-2 rounded-lg text-sm font-medium transition-all ${
+                  role === "Patient"
+                    ? "bg-white text-primary shadow-sm ring-1 ring-gray-200"
+                    : "text-text-muted hover:bg-gray-200"
+                }`}
+              >
+                Patient
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole("Doctor")}
+                className={`flex-1 p-2 rounded-lg text-sm font-medium transition-all ${
+                  role === "Doctor"
+                    ? "bg-white text-secondary shadow-sm ring-1 ring-gray-200"
+                    : "text-text-muted hover:bg-gray-200"
+                }`}
+              >
+                Doctor
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole("Guardian")}
+                className={`flex-1 p-2 rounded-lg text-sm font-medium transition-all ${
+                  role === "Guardian"
+                    ? "bg-white text-blue-600 shadow-sm ring-1 ring-gray-200"
+                    : "text-text-muted hover:bg-gray-200"
+                }`}
+              >
+                Guardian
+              </button>
             </div>
 
             <Button className="w-full py-2.5 text-base shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
