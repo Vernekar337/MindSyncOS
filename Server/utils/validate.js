@@ -1,7 +1,7 @@
 const validator = require('validator');
 
 const validateSignUpData = (req) => {
-  const { firstName, lastName, email, password, gender, age, skills, about } = req.body;
+  const { email, password, firstName, lastName, dateOfBirth, role, phone } = req.body;
   
   if(!validator.isEmail(email)){
         throw new Error("Email is not valid!")
@@ -17,14 +17,12 @@ const validateSignUpData = (req) => {
 
 const validateEditData = (req) => {
   const validEdits = [
-    "firstName",
-    "lastName",
-    "email",
-    "gender",
-    "age",
-    "skills",
-    "about",
-    "photoUrl",
+      "email",
+      "firstName",
+      "lastName",
+      "dateOfBirth",
+      "role",
+      "phone",
   ]
   const isAllowed = Object.keys(req.body).every((key) => validEdits.includes(key));
   return isAllowed;
