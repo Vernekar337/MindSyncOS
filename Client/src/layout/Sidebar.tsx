@@ -8,12 +8,14 @@ import {
   BookOpen,
   Coffee,
   Settings,
+  Calendar, // <--- Added this import
 } from "lucide-react";
 
 const Sidebar = () => {
   const navItems = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/" },
     { icon: MessageSquare, label: "AI Triage", path: "/triage" },
+    { icon: Calendar, label: "Appointments", path: "/appointments" }, // <--- Added this item
     { icon: Video, label: "Sessions", path: "/sessions" },
     { icon: Users, label: "Community", path: "/community" },
     { icon: BookOpen, label: "Journal", path: "/journal" },

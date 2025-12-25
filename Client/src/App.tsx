@@ -2,32 +2,30 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./layout/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import Triage from "./pages/Triage";
+import Appointments from "./pages/Appointments";
 import Sessions from "./pages/Sessions";
 import Community from "./pages/Community";
 import Journal from "./pages/Journal";
 import Relaxation from "./pages/Relaxation";
+import Login from "./pages/Login"; // <--- Import
+import Signup from "./pages/Signup"; // <--- Import
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public Routes (No Sidebar) */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
+        {/* Protected Routes (With Sidebar) */}
         <Route path="/" element={<MainLayout />}>
-          {/* 1. Dashboard */}
           <Route index element={<Dashboard />} />
-
-          {/* 2. AI Triage */}
           <Route path="triage" element={<Triage />} />
-
-          {/* 3. Video Sessions */}
+          <Route path="appointments" element={<Appointments />} />
           <Route path="sessions" element={<Sessions />} />
-
-          {/* 4. Community Feed */}
           <Route path="community" element={<Community />} />
-
-          {/* 5. Vocal Journal */}
           <Route path="journal" element={<Journal />} />
-
-          {/* 6. Relaxation Hub */}
           <Route path="relaxation" element={<Relaxation />} />
         </Route>
       </Routes>
