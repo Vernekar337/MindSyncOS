@@ -114,7 +114,6 @@ if (!post) {
 }
     res.json({
       "status": "success",
-      "posts" : posts
     })
 
   }catch(err){
