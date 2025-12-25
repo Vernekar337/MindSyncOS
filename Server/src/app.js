@@ -8,8 +8,9 @@ import cors from "cors";
 
 import authRouter from "../routers/auth.js";
 import profileRouter from "../routers/profile.js";
-import triageRouter from "../routers/triage.js"
+import triageRouter from "../routers/triage.js";
 import communityRouter from "../routers/community.js";
+import relaxationRouter from "../routers/relaxationHub.routes.js";
 
 const app = express();
 const PORT = 3001;
@@ -27,6 +28,7 @@ app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", triageRouter);
 app.use("/", communityRouter);
+app.use("/", relaxationRouter);
 
 connectDB()
   .then(() => {
