@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
+import { DashboardSkeleton } from "../components/ui/Skeleton"; // <--- Import Skeleton
 import { useNavigate } from "react-router-dom";
 import {
   Calendar,
@@ -11,12 +12,21 @@ import {
   ArrowRight,
   Zap,
   Trophy,
-  BookOpen, // <--- THIS WAS MISSING
+  BookOpen,
 } from "lucide-react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("mindSyncUser") || "{}");
+
+  // Step 9: Simulate Loading State
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate data fetch (1000ms delay to show skeleton)
+    const timer = setTimeout(() => setIsLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Mock Data for Heatmap (Last 30 days)
   const moodHistory = [
@@ -24,9 +34,15 @@ const Dashboard = () => {
     0, 0, 0,
   ];
 
+  // 1. SHOW SKELETON IF LOADING
+  if (isLoading) {
+    return <DashboardSkeleton />;
+  }
+
+  // 2. SHOW DASHBOARD CONTENT
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      {/* 1. Header */}
+      {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-text-main">
           Welcome back, {user.name?.split(" ")[0] || "User"}
@@ -36,7 +52,7 @@ const Dashboard = () => {
         </p>
       </div>
 
-      {/* 2. Top Row */}
+      {/* Top Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Next Appointment */}
         <Card className="flex flex-col justify-between relative overflow-hidden border-l-4 border-l-secondary">
@@ -100,7 +116,7 @@ const Dashboard = () => {
         </Card>
       </div>
 
-      {/* 3. Metrics Row */}
+      {/* Metrics Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
           {
@@ -152,7 +168,7 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* 4. Mood Heatmap */}
+        {/* Mood Heatmap */}
         <div className="lg:col-span-1">
           <h3 className="text-lg font-bold text-text-main mb-4">
             Mood History
@@ -200,7 +216,7 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        {/* 5. Recommended For You */}
+        {/* Recommended For You */}
         <div className="lg:col-span-2">
           <div className="flex justify-between items-end mb-4">
             <h3 className="text-lg font-bold text-text-main">

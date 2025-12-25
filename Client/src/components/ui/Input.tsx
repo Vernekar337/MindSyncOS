@@ -1,36 +1,43 @@
-import React from "react";
-import { cn } from "../../utils/cn";
+import React, { InputHTMLAttributes } from "react";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  icon?: React.ReactNode;
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  icon?: React.ElementType; // Use React.ElementType for Components
+  error?: string;
 }
 
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, icon, ...props }, ref) => {
-    return (
+export const Input: React.FC<InputProps> = ({
+  label,
+  icon: Icon,
+  error,
+  className = "",
+  ...props
+}) => {
+  return (
+    <div className="w-full">
+      {label && (
+        <label className="block text-sm font-medium text-text-main mb-1.5">
+          {label}
+        </label>
+      )}
       <div className="relative">
-        {/* Section 4.3: Iconography inside inputs */}
-        {icon && (
+        {Icon && (
           <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
-            {icon}
+            <Icon size={18} />
           </div>
         )}
         <input
-          ref={ref}
-          className={cn(
-            // Section 4.1: Color System (bg-white, border-gray-200)
-            // Section 4.2: Typography (text-sm, text-text-main)
-            "w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-text-main placeholder:text-text-muted transition-all duration-200",
-            "focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary",
-            "disabled:opacity-50 disabled:cursor-not-allowed",
-            icon ? "pl-10" : "",
-            className
-          )}
+          className={`
+            w-full bg-white border rounded-xl text-sm transition-all outline-none
+            ${Icon ? "pl-10 pr-4 py-2" : "px-4 py-2"}
+            focus:ring-2 focus:ring-primary/20 focus:border-primary
+            ${error ? "border-red-500 focus:ring-red-200" : "border-gray-200"}
+            ${className}
+          `}
           {...props}
         />
       </div>
-    );
-  }
-);
-
-Input.displayName = "Input";
+      {error && <p className="mt-1 text-xs text-red-500">{error}</p>}
+    </div>
+  );
+};

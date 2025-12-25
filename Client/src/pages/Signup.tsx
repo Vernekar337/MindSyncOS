@@ -1,151 +1,140 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useToast } from "../context/ToastContext";
 import { Button } from "../components/ui/Button";
-import { Card } from "../components/ui/Card";
-import { Input } from "../components/ui/Input"; // <--- Using the consistent Input component
-import { User, Mail, Lock } from "lucide-react";
+import { Input } from "../components/ui/Input";
+import { User, Mail, Lock, ArrowRight } from "lucide-react";
 
 const Signup = () => {
   const navigate = useNavigate();
-  // State for Role, Name, Email
-  const [role, setRole] = useState<"Patient" | "Doctor" | "Guardian">(
-    "Patient"
-  );
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const { showToast } = useToast();
+  const [loading, setLoading] = useState(false);
+
+  // Form State
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "Patient",
+  });
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
-    // SAVE USER WITH THE SELECTED ROLE
-    localStorage.setItem(
-      "mindSyncUser",
-      JSON.stringify({
-        email: email,
-        name: name,
-        role: role,
-      })
-    );
+    // Simulate API Call
+    setTimeout(() => {
+      // Save user to local storage (Mock Backend)
+      localStorage.setItem(
+        "mindSyncUser",
+        JSON.stringify({
+          name: formData.name,
+          role: formData.role,
+        })
+      );
 
-    navigate("/");
+      showToast("Account created successfully!", "success");
+      setLoading(false);
+      navigate("/");
+    }, 1500);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="max-w-md w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
-        {/* Header Section */}
-        <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary/20">
-            <span className="text-white font-bold text-xl">M</span>
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl overflow-hidden animate-in fade-in duration-500">
+        <div className="p-8">
+          <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white mb-6 shadow-lg shadow-primary/30">
+            <span className="font-bold text-xl">M</span>
           </div>
-          <h1 className="text-2xl font-bold text-text-main">
+
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
             Create an account
           </h1>
-          <p className="text-text-muted mt-2">
+          <p className="text-gray-500 mb-8">
             Start your journey to better mental health.
           </p>
-        </div>
 
-        {/* Signup Form Card */}
-        <Card className="bg-white shadow-xl border-0 p-8">
           <form onSubmit={handleSignup} className="space-y-5">
-            {/* Full Name Input */}
-            <div>
-              <label className="block text-sm font-medium text-text-main mb-1.5">
-                Full Name
-              </label>
-              <Input
-                type="text"
-                icon={<User size={18} />}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="John Doe"
-                required
-              />
+            {/* CORRECT USAGE: Pass the component name 'User' directly */}
+            <Input
+              label="Full Name"
+              icon={User}
+              type="text"
+              placeholder="John Doe"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              required
+            />
+
+            {/* CORRECT USAGE: Pass 'Mail' directly */}
+            <Input
+              label="Email"
+              icon={Mail}
+              type="email"
+              placeholder="name@example.com"
+              value={formData.email}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+              required
+            />
+
+            {/* CORRECT USAGE: Pass 'Lock' directly */}
+            <Input
+              label="Password"
+              icon={Lock}
+              type="password"
+              placeholder="••••••••"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+              required
+            />
+
+            {/* Role Selection */}
+            <div className="grid grid-cols-3 gap-2 bg-gray-50 p-1 rounded-xl">
+              {["Patient", "Doctor", "Guardian"].map((role) => (
+                <button
+                  key={role}
+                  type="button"
+                  onClick={() => setFormData({ ...formData, role })}
+                  className={`
+                     py-2 text-sm font-medium rounded-lg transition-all
+                     ${
+                       formData.role === role
+                         ? "bg-white text-primary shadow-sm ring-1 ring-gray-200"
+                         : "text-gray-500 hover:text-gray-900"
+                     }
+                   `}
+                >
+                  {role}
+                </button>
+              ))}
             </div>
 
-            {/* Email Input */}
-            <div>
-              <label className="block text-sm font-medium text-text-main mb-1.5">
-                Email
-              </label>
-              <Input
-                type="email"
-                icon={<Mail size={18} />}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@example.com"
-                required
-              />
-            </div>
-
-            {/* Password Input */}
-            <div>
-              <label className="block text-sm font-medium text-text-main mb-1.5">
-                Password
-              </label>
-              <Input
-                type="password"
-                icon={<Lock size={18} />}
-                placeholder="••••••••"
-                required
-              />
-            </div>
-
-            {/* Role Selection Buttons (Visual Language 4.1) */}
-            <div className="flex gap-2 p-1 bg-gray-50 rounded-xl overflow-x-auto">
-              <button
-                type="button"
-                onClick={() => setRole("Patient")}
-                className={`flex-1 p-2 rounded-lg text-sm font-medium transition-all ${
-                  role === "Patient"
-                    ? "bg-white text-primary shadow-sm ring-1 ring-gray-200"
-                    : "text-text-muted hover:bg-gray-200"
-                }`}
-              >
-                Patient
-              </button>
-              <button
-                type="button"
-                onClick={() => setRole("Doctor")}
-                className={`flex-1 p-2 rounded-lg text-sm font-medium transition-all ${
-                  role === "Doctor"
-                    ? "bg-white text-secondary shadow-sm ring-1 ring-gray-200"
-                    : "text-text-muted hover:bg-gray-200"
-                }`}
-              >
-                Doctor
-              </button>
-              <button
-                type="button"
-                onClick={() => setRole("Guardian")}
-                className={`flex-1 p-2 rounded-lg text-sm font-medium transition-all ${
-                  role === "Guardian"
-                    ? "bg-white text-blue-600 shadow-sm ring-1 ring-gray-200"
-                    : "text-text-muted hover:bg-gray-200"
-                }`}
-              >
-                Guardian
-              </button>
-            </div>
-
-            {/* Submit Button */}
-            <Button className="w-full py-2.5 text-base shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
-              Create Account
+            <Button
+              type="submit"
+              className="w-full"
+              size="lg"
+              isLoading={loading}
+            >
+              Create Account <ArrowRight size={18} className="ml-2" />
             </Button>
           </form>
 
-          {/* Footer Link */}
-          <div className="mt-8 pt-6 border-t border-gray-100 text-center text-sm text-text-muted">
+          <div className="mt-8 text-center text-sm text-gray-500">
             Already have an account?{" "}
             <Link
               to="/login"
-              className="text-primary font-semibold hover:underline"
+              className="text-primary font-bold hover:underline"
             >
               Sign in
             </Link>
           </div>
-        </Card>
+        </div>
       </div>
     </div>
   );
