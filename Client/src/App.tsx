@@ -12,6 +12,7 @@ import Relaxation from "./pages/Relaxation";
 
 // Doctor Pages
 import DoctorDashboard from "./pages/doctor/DoctorDashboard";
+import CrisisEvents from "./pages/doctor/CrisisEvents"; // <--- ADDED IMPORT
 
 // Guardian Pages
 import GuardianDashboard from "./pages/guardian/GuardianDashboard";
@@ -52,7 +53,6 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           {/* Smart Home (Dashboard) */}
           <Route index element={<HomeRoute />} />
-
           {/* Standard Patient Features */}
           <Route path="triage" element={<Triage />} />
           <Route path="appointments" element={<Appointments />} />
@@ -60,14 +60,13 @@ function App() {
           <Route path="community" element={<Community />} />
           <Route path="journal" element={<Journal />} />
           <Route path="relaxation" element={<Relaxation />} />
-
           {/* Shared / Dynamic Routes */}
           <Route path="schedule" element={<ScheduleRoute />} />
-
           {/* Guardian Specific */}
           <Route path="alerts" element={<SafetyAlerts />} />
-
-          {/* Doctor Specific (Placeholders) */}
+          {/* Doctor Specific */}
+          <Route path="crisis-events" element={<CrisisEvents />} />{" "}
+          {/* <--- ADDED ROUTE */}
           <Route
             path="patients"
             element={

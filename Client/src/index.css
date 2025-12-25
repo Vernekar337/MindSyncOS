@@ -3,10 +3,46 @@
 @tailwind utilities;
 
 @layer base {
+  /* Section 4.2: Typography - "Modern, readable sans-serif" */
   body {
-    @apply bg-background text-text-main font-sans antialiased;
+    @apply bg-background text-text-main font-sans antialiased selection:bg-primary/20 selection:text-primary-hover text-[16px];
   }
-  h1 { @apply text-3xl font-semibold; }
-  h2 { @apply text-2xl font-semibold; }
-  h3 { @apply text-xl font-medium; }
+
+  /* Section 4.2: Type Scale */
+  h1 {
+    @apply font-bold tracking-tight text-text-main;
+    font-size: 32px; /* Spec: 32-36px */
+    line-height: 1.2;
+  }
+
+  h2 {
+    @apply font-semibold tracking-tight text-text-main;
+    font-size: 24px; /* Spec: 24-28px */
+  }
+
+  h3 {
+    @apply font-medium text-text-main;
+    font-size: 20px; /* Spec: 20-22px */
+  }
+
+  /* Section 4.3: Iconography - "Simple, line-based" */
+  svg {
+    @apply shrink-0;
+  }
+
+  /* Section 4.1: Accessibility Focus States */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-white;
+  }
+}
+
+@layer utilities {
+  .animate-page {
+    animation: fade-in 0.3s ease-out forwards;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 }
