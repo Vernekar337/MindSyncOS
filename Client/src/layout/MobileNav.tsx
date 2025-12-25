@@ -10,12 +10,11 @@ import {
   BookOpen,
 } from "lucide-react";
 
-const MobileNav = () => {
-  // 1. Get User Role
-  const user = JSON.parse(localStorage.getItem("mindSyncUser") || "{}");
-  const role = user.role || "Patient";
+interface MobileNavProps {
+  userRole: string;
+}
 
-  // 2. Define Mobile Menus (Limited to top 4-5 items as per Spec 5.1)
+const MobileNav = ({ userRole }: MobileNavProps) => {
   const patientTabs = [
     { icon: LayoutDashboard, label: "Home", path: "/" },
     { icon: MessageSquare, label: "Triage", path: "/triage" },
@@ -37,13 +36,11 @@ const MobileNav = () => {
     { icon: ShieldCheck, label: "Alerts", path: "/alerts" },
   ];
 
-  // 3. Select Tabs based on Role
   let tabs = patientTabs;
-  if (role === "Doctor") tabs = doctorTabs;
-  if (role === "Guardian") tabs = guardianTabs;
+  if (userRole === "Doctor") tabs = doctorTabs;
+  if (userRole === "Guardian") tabs = guardianTabs;
 
   return (
-    // md:hidden ensures this ONLY shows on mobile/tablet small screens
     <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 h-16 px-4 z-50 flex items-center justify-around pb-safe">
       {tabs.map((tab) => (
         <NavLink
@@ -55,8 +52,13 @@ const MobileNav = () => {
             }`
           }
         >
-          <tab.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
-          <span className="text-[10px] font-medium">{tab.label}</span>
+          {/* FIX: We must wrap the children in a function to access 'isActive' here too */}
+          {({ isActive }) => (
+            <>
+              <tab.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+              <span className="text-[10px] font-medium">{tab.label}</span>
+            </>
+          )}
         </NavLink>
       ))}
     </div>

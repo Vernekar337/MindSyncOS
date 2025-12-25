@@ -11,6 +11,7 @@ import {
   ArrowRight,
   Zap,
   Trophy,
+  BookOpen, // <--- THIS WAS MISSING
 } from "lucide-react";
 
 const Dashboard = () => {
@@ -18,7 +19,6 @@ const Dashboard = () => {
   const user = JSON.parse(localStorage.getItem("mindSyncUser") || "{}");
 
   // Mock Data for Heatmap (Last 30 days)
-  // 1 = Good (Green), 2 = Okay (Yellow), 3 = Bad (Orange), 0 = No Data (Gray)
   const moodHistory = [
     1, 1, 2, 1, 3, 2, 1, 1, 2, 2, 1, 1, 1, 2, 3, 3, 2, 1, 1, 2, 1, 1, 1, 1, 2,
     0, 0, 0,
@@ -26,7 +26,7 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      {/* 1. Header with Supportive Microcopy */}
+      {/* 1. Header */}
       <div>
         <h1 className="text-3xl font-bold text-text-main">
           Welcome back, {user.name?.split(" ")[0] || "User"}
@@ -36,7 +36,7 @@ const Dashboard = () => {
         </p>
       </div>
 
-      {/* 2. Top Row: Next Appointment & Emotional Weather */}
+      {/* 2. Top Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Next Appointment */}
         <Card className="flex flex-col justify-between relative overflow-hidden border-l-4 border-l-secondary">
@@ -152,7 +152,7 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* 4. Mood Heatmap (Month View) */}
+        {/* 4. Mood Heatmap */}
         <div className="lg:col-span-1">
           <h3 className="text-lg font-bold text-text-main mb-4">
             Mood History

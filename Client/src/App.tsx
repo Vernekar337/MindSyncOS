@@ -5,6 +5,7 @@ import MainLayout from "./layout/MainLayout";
 import Dashboard from "./pages/Dashboard";
 import Triage from "./pages/Triage";
 import Appointments from "./pages/Appointments";
+import DoctorProfile from "./pages/DoctorProfile"; // <--- ADDED IMPORT (Step 6.4)
 import Sessions from "./pages/Sessions";
 import Community from "./pages/Community";
 import Journal from "./pages/Journal";
@@ -12,7 +13,7 @@ import Relaxation from "./pages/Relaxation";
 
 // Doctor Pages
 import DoctorDashboard from "./pages/doctor/DoctorDashboard";
-import CrisisEvents from "./pages/doctor/CrisisEvents"; // <--- ADDED IMPORT
+import CrisisEvents from "./pages/doctor/CrisisEvents";
 
 // Guardian Pages
 import GuardianDashboard from "./pages/guardian/GuardianDashboard";
@@ -55,7 +56,10 @@ function App() {
           <Route index element={<HomeRoute />} />
           {/* Standard Patient Features */}
           <Route path="triage" element={<Triage />} />
+          {/* Appointment Routes */}
           <Route path="appointments" element={<Appointments />} />
+          <Route path="appointments/:id" element={<DoctorProfile />} />{" "}
+          {/* <--- ADDED ROUTE (Step 6.4) */}
           <Route path="sessions" element={<Sessions />} />
           <Route path="community" element={<Community />} />
           <Route path="journal" element={<Journal />} />
@@ -65,8 +69,7 @@ function App() {
           {/* Guardian Specific */}
           <Route path="alerts" element={<SafetyAlerts />} />
           {/* Doctor Specific */}
-          <Route path="crisis-events" element={<CrisisEvents />} />{" "}
-          {/* <--- ADDED ROUTE */}
+          <Route path="crisis-events" element={<CrisisEvents />} />
           <Route
             path="patients"
             element={

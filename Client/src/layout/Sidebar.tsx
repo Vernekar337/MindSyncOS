@@ -12,22 +12,19 @@ import {
   Activity,
   ShieldCheck,
   ClipboardList,
-  X, // <--- Import Close Icon
+  X,
 } from "lucide-react";
 
-// Add Props Interface
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  userRole: string; // <--- New Prop
 }
 
-// Accept props in the component
-const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
-  const user = JSON.parse(localStorage.getItem("mindSyncUser") || "{}");
-  const isDoctor = user.role === "Doctor";
-  const isGuardian = user.role === "Guardian";
+const Sidebar = ({ isOpen, onClose, userRole }: SidebarProps) => {
+  const isDoctor = userRole === "Doctor";
+  const isGuardian = userRole === "Guardian";
 
-  // ... (Keep your existing nav arrays: patientNav, doctorNav, guardianNav) ...
   const patientNav = [
     { icon: LayoutDashboard, label: "Home / Dashboard", path: "/" },
     { icon: MessageSquare, label: "AI Triage", path: "/triage" },
@@ -37,6 +34,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     { icon: BookOpen, label: "Journal", path: "/journal" },
     { icon: Coffee, label: "Relaxation", path: "/relaxation" },
   ];
+
   const doctorNav = [
     { icon: LayoutDashboard, label: "Doctor Dashboard", path: "/" },
     { icon: Calendar, label: "My Appointments", path: "/schedule" },
@@ -45,6 +43,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     { icon: Users, label: "Community", path: "/community" },
     { icon: Activity, label: "Analytics", path: "/analytics" },
   ];
+
   const guardianNav = [
     { icon: LayoutDashboard, label: "Guardian Dashboard", path: "/" },
     { icon: Calendar, label: "Care Schedule", path: "/schedule" },
@@ -58,7 +57,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
   return (
     <>
-      {/* Mobile Overlay (Darkens background when menu is open) */}
+      {/* Mobile Overlay */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-30 md:hidden animate-in fade-in"
@@ -98,7 +97,6 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             </div>
           </div>
 
-          {/* Mobile Close Button */}
           <button
             onClick={onClose}
             className="md:hidden text-text-muted hover:text-text-main"
@@ -113,7 +111,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             <NavLink
               key={item.label}
               to={item.path}
-              onClick={onClose} // Close drawer when link clicked
+              onClick={onClose}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors group relative ${
                   isActive
