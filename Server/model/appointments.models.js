@@ -85,6 +85,7 @@ const appointmentSchema = new mongoose.Schema(
       type: String,
       enum: ["pending", "completed", "failed", "refunded"],
       default: "pending",
+      index: true,
     },
     paymentDate: Date,
     transactionId: String,
@@ -136,5 +137,9 @@ const appointmentSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Indexes
+appointmentSchema.index({ patientId: 1, scheduleTime: -1 });
+appointmentSchema.index({ doctorId: 1, scheduleTime: -1 });
 
 export const Appointment = mongoose.model("Appointment", appointmentSchema);

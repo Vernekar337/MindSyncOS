@@ -82,7 +82,7 @@ const vocalJournalSchema = new mongoose.Schema(
     // Automated Mood Tags
     moodTags: [
       {
-        tag: String,
+        tag: { type: String, index: true },
         confidence: Number,
         indicators: [String],
       },
@@ -134,5 +134,8 @@ const vocalJournalSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Indexes
+vocalJournalSchema.index({ userId: 1, recordedAt: -1 });
 
 export const VocalJournal = mongoose.model("VocalJournal", vocalJournalSchema);

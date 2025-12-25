@@ -52,8 +52,8 @@ const chatMessageSchema = new mongoose.Schema(
 
     // For Private Conversations
     conversationId: {
-        type: mongoose.Schema.Types.ObjectId,
-          ref: "Conversation",
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Conversation",
       default: null,
       index: true,
     },
@@ -141,5 +141,11 @@ const chatMessageSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Indexes
+chatMessageSchema.index({ senderId: 1, createdAt: -1 });
+chatMessageSchema.index({ channel: 1, createdAt: -1 });
+chatMessageSchema.index({ triageSessionId: 1, createdAt: 1 });
+chatMessageSchema.index({ communityPostId: 1, createdAt: 1 });
 
 export const ChatMessage = mongoose.model("ChatMessage", chatMessageSchema);
