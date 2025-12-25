@@ -6,8 +6,7 @@ const cors = require("cors")
 
 const authRouter = require("../routers/auth");
 const profileRouter = require("../routers/profile");
-const connectionRouter = require("../routers/request");
-const userRouter = require("../routers/user");
+
 
 const PORT = 3001;
 
