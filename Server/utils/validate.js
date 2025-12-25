@@ -8,9 +8,7 @@ export const validateSignUpData = (req) => {
     throw new Error("Email is not valid!");
   } else if (!validator.isStrongPassword(password)) {
     throw new Error("Your password is not strong enough !");
-  } else if (!["male", "female", "other"].includes(gender.toLowerCase())) {
-    throw new Error("Gender is not Valid !");
-  }
+  } 
 };
 
 export const validateEditData = (req) => {

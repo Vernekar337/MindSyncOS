@@ -1,8 +1,8 @@
 import express from "express";
-import { model } from "../geminiClient.js";
+import { model } from "../config/geminiClient.js";
 import { buildTriagePrompt } from "../prompts/triagePrompt.js";
-const userAuth = require("../middlewares/userAuth");
-const chatHistory = require("../model/chat_messages")
+import { userAuth }  from "../middlewares/userAuth"
+import  { chatHistory }  from "../model/chat_messages"
 
 const triageRouter = express.Router();
 
@@ -80,3 +80,6 @@ triageRouter.post("/triage/chat", userAuth, async(req, res)=>{
     });
   }
 })
+
+
+export default triageRouter;
