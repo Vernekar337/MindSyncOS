@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const connectDB = async() =>{
+const connectDB = async () => {
   await mongoose.connect(
-    "mongodb+srv://vernekar337:sahil337@cluster0.eqfq30p.mongodb.net/devTinder"
+    "mongodb+srv://mindsync:mindsyncos@mindsync.0peg8ya.mongodb.net/?appName=mindsync"
   );
 };
 
-module.exports = connectDB;
+export default connectDB;
