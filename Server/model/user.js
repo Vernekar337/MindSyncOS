@@ -2,48 +2,189 @@ const mongoose = require("mongoose")
 const validator = require("validator");
 
 const userSchema = mongoose.Schema({
-  firstName : {
-    type: String,
-    required: true,
-  },
-  lastName : {
-    type: String,
-    minLength: 1,
-  },
-  email : {
+  _id: ObjectId,
+  
+  // Basic Information
+  email: {
     type: String,
     required: true,
     unique: true,
     lowercase: true,
-    trim: true
+    index: true,
+    validate: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   },
-  password : {
+  password: {
     type: String,
-    unique: true,
     required: true,
-    minLength: 8,
+    minlength: 8,
+    // Stored as bcrypt hash (rounds: 10)
   },
-  photoUrl: {
+  firstName: {
     type: String,
+    required: true,
+    minlength: 2,
+    maxlength: 50
   },
-  gender : {
+  lastName: {
     type: String,
-    trim: true,
-    lowercase: true
+    required: true,
+    minlength: 2,
+    maxlength: 50
   },
-  age : {
+  
+  // User Type & Role
+  role: {
+    type: String,
+    enum: ['patient', 'doctor', 'admin', 'guardian'],
+    required: true,
+    index: true
+  },
+  
+  // Personal Details
+  dateOfBirth: {
+    type: Date,
+    required: function() { return this.role === 'patient'; }
+  },
+  phone: {
+    type: String,
+    validate: /^\+?[1-9]\d{1,14}$/,
+    sparse: true
+  },
+  gender: {
+    type: String,
+    enum: ['male', 'female', 'non-binary', 'prefer_not_to_say'],
+    sparse: true
+  },
+  avatar: {
+    type: String,
+    default: null,
+    // URL to S3 or CDN
+  },
+  bio: {
+    type: String,
+    maxlength: 500,
+    default: null
+  },
+  
+  // Verification & Security
+  emailVerified: {
+    type: Boolean,
+    default: false,
+    index: true
+  },
+  emailVerificationToken: {
+    type: String,
+    default: null,
+    select: false
+  },
+  emailVerificationTokenExpiry: {
+    type: Date,
+    default: null,
+    select: false
+  },
+  passwordResetToken: {
+    type: String,
+    default: null,
+    select: false
+  },
+  passwordResetTokenExpiry: {
+    type: Date,
+    default: null,
+    select: false
+  },
+  twoFactorEnabled: {
+    type: Boolean,
+    default: false
+  },
+  twoFactorSecret: {
+    type: String,
+    select: false,
+    default: null
+  },
+  
+  // Preferences
+  preferredLanguage: {
+    type: String,
+    enum: ['en', 'hi', 'mr', 'ta', 'te', 'kn', 'ml'],
+    default: 'en'
+  },
+  timezone: {
+    type: String,
+    default: 'Asia/Kolkata'
+  },
+  theme: {
+    type: String,
+    enum: ['light', 'dark', 'auto'],
+    default: 'auto'
+  },
+  notificationPreferences: {
+    email: {
+      type: Boolean,
+      default: true
+    },
+    sms: {
+      type: Boolean,
+      default: true
+    },
+    inApp: {
+      type: Boolean,
+      default: true
+    },
+    appointmentReminders: {
+      type: Boolean,
+      default: true
+    },
+    communityUpdates: {
+      type: Boolean,
+      default: true
+    }
+  },
+  
+  // Status & Account
+  accountStatus: {
+    type: String,
+    enum: ['active', 'inactive', 'suspended', 'deleted'],
+    default: 'active',
+    index: true
+  },
+  suspensionReason: {
+    type: String,
+    default: null
+  },
+  suspensionEndDate: {
+    type: Date,
+    default: null
+  },
+  lastLogin: {
+    type: Date,
+    default: null,
+    index: true
+  },
+  loginAttempts: {
     type: Number,
-    min: 18,
+    default: 0,
+    select: false
   },
-  skills: {
-    type: [String],
+  lockUntil: {
+    type: Date,
+    default: null,
+    select: false
   },
-  about : {
-    type: String,
-    default: "Hey there! I am using DevTinder.",
-  }
-}, {
-  timestamps: true,
-});
+  
+  // Timestamps
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    index: true
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
+  },
+  deletedAt: {
+    type: Date,
+    default: null,
+    sparse: true
+  }});
 
 module.exports = mongoose.model("User", userSchema);
