@@ -1,0 +1,40 @@
+{
+  "name": "devtinder",
+  "version": "1.0.0",
+  "description": "Tinder for developers",
+  "keywords": [
+    "nodejs",
+    "js",
+    "backend"
+  ],
+  "homepage": "https://github.com/Vernekar337/DevTinder0.1#readme",
+  "bugs": {
+    "url": "https://github.com/Vernekar337/DevTinder0.1/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vernekar337/DevTinder0.1.git"
+  },
+  "license": "ISC",
+  "author": "Sahil Vernekar",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.13",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "daisyui": "^5.1.24",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.0",
+    "validator": "^13.15.15"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "tailwindcss": "^4.1.13"
+  }
+}
