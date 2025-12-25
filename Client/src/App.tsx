@@ -1,40 +1,34 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./layout/MainLayout";
 import Dashboard from "./pages/Dashboard";
-import Triage from "./pages/Triage"; // <--- Import this
-
-// Placeholder components for pages we haven't built yet
-const Placeholder = ({ title }: { title: string }) => (
-  <div className="p-10 text-center text-text-muted">
-    <h2 className="text-2xl font-bold mb-2">{title}</h2>
-    <p>This module is under development.</p>
-  </div>
-);
+import Triage from "./pages/Triage";
+import Sessions from "./pages/Sessions";
+import Community from "./pages/Community";
+import Journal from "./pages/Journal";
+import Relaxation from "./pages/Relaxation";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainLayout />}>
+          {/* 1. Dashboard */}
           <Route index element={<Dashboard />} />
-          <Route path="triage" element={<Triage />} />{" "}
-          {/* <--- Update this line */}
-          <Route
-            path="sessions"
-            element={<Placeholder title="Video Sessions" />}
-          />
-          <Route
-            path="community"
-            element={<Placeholder title="Community Feed" />}
-          />
-          <Route
-            path="journal"
-            element={<Placeholder title="Vocal Journal" />}
-          />
-          <Route
-            path="relaxation"
-            element={<Placeholder title="Relaxation Hub" />}
-          />
+
+          {/* 2. AI Triage */}
+          <Route path="triage" element={<Triage />} />
+
+          {/* 3. Video Sessions */}
+          <Route path="sessions" element={<Sessions />} />
+
+          {/* 4. Community Feed */}
+          <Route path="community" element={<Community />} />
+
+          {/* 5. Vocal Journal */}
+          <Route path="journal" element={<Journal />} />
+
+          {/* 6. Relaxation Hub */}
+          <Route path="relaxation" element={<Relaxation />} />
         </Route>
       </Routes>
     </BrowserRouter>
