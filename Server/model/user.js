@@ -2,9 +2,6 @@ const mongoose = require("mongoose")
 const validator = require("validator");
 
 const userSchema = mongoose.Schema({
-  _id: ObjectId,
-  
-  // Basic Information
   email: {
     type: String,
     required: true,
@@ -85,6 +82,7 @@ const userSchema = mongoose.Schema({
     type: Date,
     default: null,
     sparse: true
-  }});
+  }
+});
 
 module.exports = mongoose.model("User", userSchema);

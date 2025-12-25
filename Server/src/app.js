@@ -20,8 +20,6 @@ app.use(cookieParser());
 
 app.use("/", authRouter);
 app.use("/", profileRouter);
-app.use("/", connectionRouter);
-app.use("/", userRouter);
 
 connectDB().then(()=> {
   console.log("DB connected successfully")
