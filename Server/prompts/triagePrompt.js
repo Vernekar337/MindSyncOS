@@ -1,4 +1,4 @@
-// prompts/triagePrompt.js
+
 export const buildTriagePrompt = (message) => `
 You are a mental health triage assistant.
 
