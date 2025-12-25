@@ -36,13 +36,6 @@ const relaxationActivitySchema = new mongoose.Schema(
       required: true, // Duration in seconds
     },
 
-    // Instructor Information
-    instructor: {
-      name: String,
-      credentials: String,
-      image: String,
-    },
-
     // Media Assets
     audioUrl: String,
     videoUrl: String,
