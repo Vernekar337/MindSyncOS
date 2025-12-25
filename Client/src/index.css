@@ -2,47 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  /* Section 4.2: Typography - "Modern, readable sans-serif" */
-  body {
-    @apply bg-background text-text-main font-sans antialiased selection:bg-primary/20 selection:text-primary-hover text-[16px];
-  }
+/* --- STEP 9: INTERACTION & MOTION GUIDELINES --- */
 
-  /* Section 4.2: Type Scale */
-  h1 {
-    @apply font-bold tracking-tight text-text-main;
-    font-size: 32px; /* Spec: 32-36px */
-    line-height: 1.2;
-  }
+/* 1. Page Transitions (150-250ms easing) */
+.animate-page {
+  animation: fade-in-up 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 
-  h2 {
-    @apply font-semibold tracking-tight text-text-main;
-    font-size: 24px; /* Spec: 24-28px */
-  }
+/* 2. Drawer/Modal Transitions */
+.animate-drawer {
+  animation: slide-in-right 250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 
-  h3 {
-    @apply font-medium text-text-main;
-    font-size: 20px; /* Spec: 20-22px */
-  }
-
-  /* Section 4.3: Iconography - "Simple, line-based" */
-  svg {
-    @apply shrink-0;
-  }
-
-  /* Section 4.1: Accessibility Focus States */
-  :focus-visible {
-    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-white;
+/* 3. Smooth Hover State (Standard Duration) */
+@layer components {
+  .btn-hover {
+    @apply transition-all duration-200 ease-in-out;
   }
 }
 
-@layer utilities {
-  .animate-page {
-    animation: fade-in 0.3s ease-out forwards;
+/* Custom Keyframes matching the guidelines */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  @keyframes fade-in {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Crisis Context: Ensure no flashing motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

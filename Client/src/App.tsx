@@ -1,11 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./layout/MainLayout";
+import { ToastProvider } from "./context/ToastContext";
 
 // Patient Pages
 import Dashboard from "./pages/Dashboard";
 import Triage from "./pages/Triage";
 import Appointments from "./pages/Appointments";
-import DoctorProfile from "./pages/DoctorProfile"; // <--- ADDED IMPORT (Step 6.4)
+import DoctorProfile from "./pages/DoctorProfile";
 import Sessions from "./pages/Sessions";
 import Community from "./pages/Community";
 import Journal from "./pages/Journal";
@@ -14,6 +15,12 @@ import Relaxation from "./pages/Relaxation";
 // Doctor Pages
 import DoctorDashboard from "./pages/doctor/DoctorDashboard";
 import CrisisEvents from "./pages/doctor/CrisisEvents";
+import Patients from "./pages/doctor/Patients";
+import PatientDetail from "./pages/doctor/PatientDetail";
+import DoctorSchedule from "./pages/doctor/DoctorSchedule"; // <--- ADDED (Step 11)
+
+// Admin Pages
+import Moderation from "./pages/admin/Moderation"; // <--- ADDED (Step 11)
 
 // Guardian Pages
 import GuardianDashboard from "./pages/guardian/GuardianDashboard";
@@ -26,65 +33,82 @@ import Signup from "./pages/Signup";
 
 // --- ROLE BASED ROUTE HELPERS ---
 
-// 1. Home Route: Decides which Dashboard to show
-const HomeRoute = () => {
-  const user = JSON.parse(localStorage.getItem("mindSyncUser") || "{}");
-  if (user.role === "Doctor") return <DoctorDashboard />;
-  if (user.role === "Guardian") return <GuardianDashboard />;
-  return <Dashboard />; // Default to Patient
+const getUser = () => {
+  try {
+    const userStr = localStorage.getItem("mindSyncUser");
+    return userStr ? JSON.parse(userStr) : {};
+  } catch (e) {
+    return {};
+  }
 };
 
-// 2. Schedule Route: Decides which Schedule view to show
+const HomeRoute = () => {
+  const user = getUser();
+  if (user.role === "Doctor") return <DoctorDashboard />;
+  if (user.role === "Guardian") return <GuardianDashboard />;
+  return <Dashboard />;
+};
+
+// Updated Schedule Route to handle Doctor View
 const ScheduleRoute = () => {
-  const user = JSON.parse(localStorage.getItem("mindSyncUser") || "{}");
+  const user = getUser();
   if (user.role === "Guardian") return <CareSchedule />;
-  // Fallback for Doctor (Placeholder for now)
-  return <div className="p-10 text-center">Schedule Manager (Coming Soon)</div>;
+  if (user.role === "Doctor") return <DoctorSchedule />; // <--- NOW CONNECTED
+
+  // Fallback for Patient (if they access /schedule directly)
+  return (
+    <div className="p-10 text-center">
+      Patient Schedule is inside Appointments.
+    </div>
+  );
 };
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* --- Public Routes --- */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+    <ToastProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
 
-        {/* --- Protected Routes (Inside Sidebar Layout) --- */}
-        <Route path="/" element={<MainLayout />}>
-          {/* Smart Home (Dashboard) */}
-          <Route index element={<HomeRoute />} />
-          {/* Standard Patient Features */}
-          <Route path="triage" element={<Triage />} />
-          {/* Appointment Routes */}
-          <Route path="appointments" element={<Appointments />} />
-          <Route path="appointments/:id" element={<DoctorProfile />} />{" "}
-          {/* <--- ADDED ROUTE (Step 6.4) */}
-          <Route path="sessions" element={<Sessions />} />
-          <Route path="community" element={<Community />} />
-          <Route path="journal" element={<Journal />} />
-          <Route path="relaxation" element={<Relaxation />} />
-          {/* Shared / Dynamic Routes */}
-          <Route path="schedule" element={<ScheduleRoute />} />
-          {/* Guardian Specific */}
-          <Route path="alerts" element={<SafetyAlerts />} />
-          {/* Doctor Specific */}
-          <Route path="crisis-events" element={<CrisisEvents />} />
-          <Route
-            path="patients"
-            element={
-              <div className="p-10 text-center">Patient List (Coming Soon)</div>
-            }
-          />
-          <Route
-            path="analytics"
-            element={
-              <div className="p-10 text-center">Analytics (Coming Soon)</div>
-            }
-          />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          {/* Protected */}
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<HomeRoute />} />
+
+            {/* Patient Features */}
+            <Route path="triage" element={<Triage />} />
+            <Route path="appointments" element={<Appointments />} />
+            <Route path="appointments/:id" element={<DoctorProfile />} />
+            <Route path="sessions" element={<Sessions />} />
+            <Route path="community" element={<Community />} />
+            <Route path="journal" element={<Journal />} />
+            <Route path="relaxation" element={<Relaxation />} />
+
+            {/* Shared */}
+            <Route path="schedule" element={<ScheduleRoute />} />
+
+            {/* Guardian */}
+            <Route path="alerts" element={<SafetyAlerts />} />
+
+            {/* Doctor & Admin Features */}
+            <Route path="crisis-events" element={<CrisisEvents />} />
+            <Route path="patients" element={<Patients />} />
+            <Route path="patients/:id" element={<PatientDetail />} />
+
+            {/* Added Moderation Route (Accessible by Doctors/Admins) */}
+            <Route path="moderation" element={<Moderation />} />
+
+            <Route
+              path="analytics"
+              element={
+                <div className="p-10 text-center">Analytics (Coming Soon)</div>
+              }
+            />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </ToastProvider>
   );
 }
 
