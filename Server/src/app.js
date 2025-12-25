@@ -11,6 +11,7 @@ import profileRouter from "../routers/profile.js";
 import triageRouter from "../routers/triage.js";
 import communityRouter from "../routers/community.js";
 import relaxationRouter from "../routers/relaxationHub.routes.js";
+import appointmentRouter from "../routers/appointmentBooking.routes.js";
 
 const app = express();
 const PORT = 3001;
@@ -29,6 +30,7 @@ app.use("/", profileRouter);
 app.use("/", triageRouter);
 app.use("/", communityRouter);
 app.use("/", relaxationRouter);
+app.use("/appointments", appointmentRouter);
 
 connectDB()
   .then(() => {
